@@ -4,7 +4,7 @@ from subprocess import call
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'persistencia')))
-from funcoes_banco_de_dados import * # type: ignore
+from funcoes_triagem import * # type: ignore
 
 ######### FUNCOES #########
 def cadastrar():
@@ -20,18 +20,9 @@ def cadastrar():
         texto_de_erro['text'] = '*O nome dever ter, no mínimo, 3 digitos'
     
     else:
-        resultado = pesquisa_banco_de_dados('cadastro', 'usuarios') # type: ignore
-        encontrado = 0
-        for i in resultado:
-            if i[1] == nome:
-                texto_de_erro['text'] = '*Usuário ja cadastrado'
-                encontrado = 1
-                break
-
-        if encontrado == 0:
-            inserir_no_usuario_banco_de_dados('cadastro', 'usuarios', nome, senha)# type: ignore
-            nome = nome.replace(' ', '_')
-            criar_nova_tabela('cadastro', nome)# type: ignore
+        if criar_cadastro(nome, senha): # type: ignore
+            texto_de_erro['text'] = '*Usuário ja cadastrado'
+        else:
             janela_cadastro.destroy()
 
 ######### INTERFACE #########

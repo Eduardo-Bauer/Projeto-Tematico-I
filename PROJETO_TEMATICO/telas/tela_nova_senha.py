@@ -4,7 +4,7 @@ from subprocess import call
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'persistencia')))
-from funcoes_banco_de_dados import * # type: ignore
+from funcoes_triagem import * # type: ignore
 
 ######### FUNCOES #########
 def nova_senha():
@@ -17,18 +17,9 @@ def nova_senha():
         texto_de_erro['text'] = '*A senha deve ter, no mínimo, 6 digitos'
 
     else:
-        resultado = pesquisa_banco_de_dados('cadastro', 'usuarios') # type: ignore 
-        encontrado = 0
-        for i in resultado:
-            if i[1] == nome:
-                texto_de_erro['text'] = ''
-                encontrado = 1
-                break
-
-        if encontrado == 1:
-            editar_banco_de_dados('cadastro', 'usuarios', 'nome', 'senha', nome, senha) # type: ignore
+        if mudar_senha(nome, senha): # type: ignore
             janela_nova_senha.destroy()
-
+            
         else:
             texto_de_erro['text'] = '*Usuário não encontrado'
 
