@@ -34,15 +34,15 @@ def demostracao_dos_dados():
         for item in tv_dados.get_children():
             tv_dados.delete(item)
             
-        titulo['text'] = f'{pesquisa}'
+        titulo['text'] = f'{pesquisa.replace('_', ' ')}'
 
         valores = pesquisar_dados(pesquisa) # type: ignore
 
         for i in range(0, len(valores[0])):
-            tv_dados.insert('', 'end', values=(valores[0][i], valores[1][i], valores[2][i], valores[3][i]))
+            tv_dados.insert('', 'end', values=(valores[0][i].replace('_', ' '), valores[1][i], valores[2][i], valores[3][i]))
 
     else:
-        titulo['text'] = 'TITULO'
+        titulo['text'] = 'SCOREGAME'
 
 def demostracao_dos_dados_favoritos():
     try:
@@ -50,14 +50,14 @@ def demostracao_dos_dados_favoritos():
         for item in tv_dados.get_children():
             tv_dados.delete(item)
 
-        titulo['text'] = f'{pesquisa}'
+        titulo['text'] = f'{pesquisa.replace('_', ' ')}'
 
         valores = pesquisar_dados_favoritos(pesquisa) # type: ignore
 
         for i in range(0, len(valores[0])):
             tv_dados.insert('', 'end', values=(valores[0][i], valores[1][i], valores[2][i], valores[3][i]))
     except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'TITULO'
+        titulo['text'] = 'SCOREGAME'
 
 def favoritar():
     try:
@@ -66,10 +66,10 @@ def favoritar():
         if add_favorito(pesquisa): # type: ignore
             recarregar_favoritos()
         else:
-            titulo['text'] = 'TITULO'
+            titulo['text'] = 'SCOREGAME'
 
     except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'TITULO'
+        titulo['text'] = 'SCOREGAME'
 
 def desfavoritar():
     try:
@@ -78,7 +78,7 @@ def desfavoritar():
         recarregar_favoritos()
 
     except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'TITULO'
+        titulo['text'] = 'SCOREGAME'
 
 def recarregar_favoritos():
     usuario = usuario_ativo() # type: ignore
@@ -109,7 +109,7 @@ for i in dados[0]:
     cont = 1
     for j in dados[1]:
         if i[cont] == 1:
-            tv_filtragem.insert(f'{i[0]}', 'end', f'{i[0]}_{j}', text = f'{j}')
+            tv_filtragem.insert(f'{i[0]}', 'end', f'{i[0]}_{j}', text = f'{j.replace('_', ' ')}')
         cont += 1
 
 tv_filtragem.bind('<ButtonRelease-1>')
@@ -136,7 +136,7 @@ if usuario_ativo(): # type: ignore
     recarregar_favoritos()
 
 #### QUADRO DE DADOS ####
-titulo = ttk.Label(quadro_de_dados, text='TITULO', style='titulo.TLabel', anchor='center')
+titulo = ttk.Label(quadro_de_dados, text='SCOREGAME', style='titulo.TLabel', anchor='center')
 columns = ('Estatísticas', 'Primeiro', 'Segundo', 'Terceiro')
 y_dados_scrollbar = tk.Scrollbar(quadro_de_dados, orient=tk.VERTICAL)
 tv_dados = ttk.Treeview(quadro_de_dados, columns=columns, show='headings', yscrollcommand=y_dados_scrollbar.set, style='dados.Treeview')
