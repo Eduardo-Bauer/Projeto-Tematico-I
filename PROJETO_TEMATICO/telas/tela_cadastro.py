@@ -37,7 +37,7 @@ from styles import * # type: ignore
 ######### COMPONENTES #########
 #entradas#
 entrada_usuario = ttk.Entry(janela_cadastro, style='TEntry', font=('Calibri', 12, 'bold'))
-entrada_senha = ttk.Entry(janela_cadastro, style='TEntry', font=('Calibri', 12, 'bold'))
+entrada_senha = ttk.Entry(janela_cadastro, style='TEntry', font=('Calibri', 12, 'bold'), show='*')
 
 #textos#
 texto_titulo = ttk.Label(janela_cadastro, text='CADASTRE-SE', style='titulo_geral.TLabel')

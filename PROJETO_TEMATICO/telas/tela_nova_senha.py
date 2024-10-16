@@ -35,7 +35,7 @@ from styles import * # type: ignore
 ######### COMPONENTES #########
 #entradas#
 entrada_usuario = ttk.Entry(janela_nova_senha, style='TEntry', font=('Calibri', 12, 'bold'))
-entrada_senha = ttk.Entry(janela_nova_senha, style='TEntry', font=('Calibri', 12, 'bold'))
+entrada_senha = ttk.Entry(janela_nova_senha, style='TEntry', font=('Calibri', 12, 'bold'), show='*')
 
 #textos#
 texto_titulo = ttk.Label(janela_nova_senha, text='NOVA SENHA', style='titulo_geral.TLabel')

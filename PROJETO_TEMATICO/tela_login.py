@@ -57,7 +57,7 @@ figura_login = Label(image=logo, background='#292929')
 
 #entradas#
 entrada_usuario = ttk.Entry(janela_login, style = 'TEntry', font=('Calibri', 12, 'bold'))
-entrada_senha = ttk.Entry(janela_login, style = 'TEntry', font=('Calibri', 12, 'bold'))
+entrada_senha = ttk.Entry(janela_login, style = 'TEntry', font=('Calibri', 12, 'bold'), show='*')
 
 #textos#
 texto_usuario = ttk.Label(janela_login, text = 'Digite o Usuario', style = 'TLabel')

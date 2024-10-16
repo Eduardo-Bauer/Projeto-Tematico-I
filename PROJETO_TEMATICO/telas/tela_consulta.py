@@ -92,13 +92,21 @@ def recarregar_favoritos():
         tv_favoritos.insert('', 'end', f'{i[1]}_{i[2]}', values=(i[1], i[2]))
 
 ######### COMPONENTES #########
-#### QUADRO DE PESQUISA ####
+#textos#
 texto_da_lista_anos = ttk.Label(quadro_de_pesquisa, text = 'Edições - Olimpiadas', style = 'titulo_treeview.TLabel')
+texto_de_favoritos = ttk.Label(quadro_de_pesquisa, text = 'Favoritos', style = 'titulo_treeview.TLabel')
+titulo = ttk.Label(quadro_de_dados, text='SCOREGAME', style='titulo.TLabel', anchor='center')
 
+#botoes#
+botao_de_pesquisa = ttk.Button(quadro_de_pesquisa, text = 'Pesquisar', style = 'principal.TButton', command = demostracao_dos_dados)
+botao_favoritar = ttk.Button(quadro_de_pesquisa, text = 'Favoritar', style = 'TButton', command = favoritar)
+botao_de_pesquisa_favorito = ttk.Button(quadro_de_pesquisa, text='Pesquisar', style='principal.TButton', command = demostracao_dos_dados_favoritos)
+botao_desfavoritar = ttk.Button(quadro_de_pesquisa, text='Desfavoritar', style='TButton', command = desfavoritar)
+
+#### QUADRO DE PESQUISA ####
 y_filtragem_scrollbar = tk.Scrollbar(quadro_de_pesquisa, orient = tk.VERTICAL)
 tv_filtragem = ttk.Treeview(quadro_de_pesquisa, yscrollcommand = y_filtragem_scrollbar.set, style = 'pesquisa.Treeview', show = 'tree')
 y_filtragem_scrollbar['command'] = tv_filtragem.yview
-
 
 dados = criar_tela_de_filtragem() # type: ignore
 
@@ -114,12 +122,8 @@ for i in dados[0]:
 
 tv_filtragem.bind('<ButtonRelease-1>')
 
-botao_de_pesquisa = ttk.Button(quadro_de_pesquisa, text = 'Pesquisar', style = 'principal.TButton', command = demostracao_dos_dados)
-botao_favoritar = ttk.Button(quadro_de_pesquisa, text = 'Favoritar', style = 'TButton', command = favoritar)
-
 #### QUADRO DE FAVORITOS ####
 y_favoritos_scrollbar = tk.Scrollbar(quadro_de_pesquisa, orient = tk.VERTICAL)
-texto_de_favoritos = ttk.Label(quadro_de_pesquisa, text = 'Favoritos', style = 'titulo_treeview.TLabel')
 columns = ('Ano', 'Modalidade')
 tv_favoritos = ttk.Treeview(quadro_de_pesquisa, columns = columns, style = 'pesquisa.Treeview', yscrollcommand = y_favoritos_scrollbar.set, show = 'headings')
 
@@ -129,14 +133,10 @@ for i in columns:
 
 y_favoritos_scrollbar['command'] = tv_favoritos.yview
 
-botao_de_pesquisa_favorito = ttk.Button(quadro_de_pesquisa, text='Pesquisar', style='principal.TButton', command = demostracao_dos_dados_favoritos)
-botao_desfavoritar = ttk.Button(quadro_de_pesquisa, text='Desfavoritar', style='TButton', command = desfavoritar)
-
 if usuario_ativo(): # type: ignore
     recarregar_favoritos()
 
 #### QUADRO DE DADOS ####
-titulo = ttk.Label(quadro_de_dados, text='SCOREGAME', style='titulo.TLabel', anchor='center')
 columns = ('Estatísticas', 'Primeiro', 'Segundo', 'Terceiro')
 y_dados_scrollbar = tk.Scrollbar(quadro_de_dados, orient=tk.VERTICAL)
 tv_dados = ttk.Treeview(quadro_de_dados, columns=columns, show='headings', yscrollcommand=y_dados_scrollbar.set, style='dados.Treeview')
