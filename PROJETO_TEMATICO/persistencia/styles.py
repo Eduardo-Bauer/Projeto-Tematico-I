@@ -20,7 +20,12 @@ botao_principal.map("principal.TButton", background=[("active", "#e0ffd3")], for
 ######### BOTÃO SECUNDARIO #########
 botao_secundario = ttk.Style()
 botao_secundario.configure('TButton', font=('Calibri', 10, 'bold'), relief="solid", background='white')
-botao_principal.map("TButton", background=[("active", "#defcff")], foreground=[("pressed", "black")])
+botao_secundario.map("TButton", background=[("active", "#defcff")], foreground=[("pressed", "black")])
+
+######### BOTÃO REATIVO #########
+botao_reativo = ttk.Style()
+botao_reativo.configure("TCheckbutton", background="#292929", foreground="white", font=('Calibri', 12, 'bold'))
+botao_reativo.map("TCheckbutton", background=[("active", "darkgrey")])
 
 ######### ENTRADAS #########
 entrada = ttk.Style()
