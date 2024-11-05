@@ -47,20 +47,39 @@ def demostracao_dos_dados():
     except mysql.connector.errors.ProgrammingError: # type: ignore
         texto_erro_filtragem.config(text='pesquisa não encontrada')
 
-def modificar_texto_erro(resultado, ano, modalidade):
-    if resultado == 0:
-        texto_erro_acoes.config(text='Ano Deve Ter Apenas Numeros')
-    elif resultado == 1:
-        texto_erro_acoes.config(text='Ano Não Encontrado')
-        
-    elif resultado == 2:
-        texto_erro_acoes.config(text=f'Modalidade Não Encontrada no Ano: {ano}')
-        
-    elif resultado == 3:
-        texto_erro_acoes.config(text=f'Estatistica Não Encontrada no Ano/modalidade: {ano}/{modalidade}')
+def modificar_texto_erro(resultado, ano, modalidade, acao):
+    if acao == 'excluir':
+        if resultado == 0:
+            texto_erro_acoes.config(text='Ano Deve Ter Apenas Numeros')
+        elif resultado == 1:
+            texto_erro_acoes.config(text='Ano Não Encontrado')
+            
+        elif resultado == 2:
+            texto_erro_acoes.config(text=f'Modalidade Não Encontrada no Ano: {ano}')
+            
+        elif resultado == 3:
+            texto_erro_acoes.config(text=f'Estatistica Não Encontrada no Ano/modalidade: {ano}/{modalidade}')
+        else:
+            texto_erro_acoes.config(foreground='green', text='Excluido com Sucesso!')
+            demostracao_dos_dados()
+
+    elif acao == 'inserir':
+        if resultado == 0:
+            texto_erro_acoes.config(text='Ano Deve Ter Apenas Numeros')
+        elif resultado == 1:
+            texto_erro_acoes.config(text='Ano Não Encontrado')
+            
+        elif resultado == 2:
+            texto_erro_acoes.config(text=f'Modalidade Não Encontrada no Ano: {ano}')
+            
+        elif resultado == 3:
+            texto_erro_acoes.config(text=f'Estatistica Encontrada no Ano/modalidade: {ano}/{modalidade}')
+        else:
+            texto_erro_acoes.config(foreground='green', text='Inserido com Sucesso!')
+            demostracao_dos_dados()
+
     else:
-        texto_erro_acoes.config(foreground='green', text='Estatistica Excluida com Sucesso!')
-        demostracao_dos_dados()
+        pass
 
 def puxar_dados():
     dados = pesquisa_dados(tv_dados.focus()) # type: ignore
@@ -80,7 +99,26 @@ def puxar_dados():
     entrada_terceiro.insert(0, dados[3])
 
 def inserir():
-    pass
+    ano = entrada_ano.get()
+    modalidade = entrada_modalidade.get()
+    estatistica = entrada_estatistica.get()
+    acao = 'inserir'
+
+    texto_erro_acoes.config(foreground='red', text='')
+
+    if ano and modalidade and estatistica:
+        resultado = inserir_estatistica(ano, modalidade, estatistica) # type: ignore
+        modificar_texto_erro(resultado, ano, modalidade, acao)
+
+    elif ano and modalidade and not estatistica:
+        resultado = inserir_modalidade(ano, modalidade) # type: ignore
+        modificar_texto_erro(resultado, ano, modalidade, acao)
+
+    elif ano and not modalidade and not estatistica:
+        resultado = inserir_ano(ano) # type: ignore
+        modificar_texto_erro(resultado, ano, modalidade, acao)
+    else:
+        texto_erro_acoes.config(text='Não Entendi o Que Você Está Excluindo')
 
 def editar():
     pass
@@ -89,24 +127,24 @@ def excluir():
     ano = entrada_ano.get()
     modalidade = entrada_modalidade.get()
     estatistica = entrada_estatistica.get()
+    acao = 'excluir'
+    
+    texto_erro_acoes.config(foreground='red', text='')
 
     if ano and modalidade and estatistica:
-        texto_erro_acoes.config(foreground='red', text='')
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a estatistica {estatistica} do {ano}/{modalidade}, você deseja continuar?'):
             resultado = remover_estatistica(ano, modalidade, estatistica) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade)
+            modificar_texto_erro(resultado, ano, modalidade, acao)
 
     elif ano and modalidade and not estatistica:
-        texto_erro_acoes.config(foreground='red', text='')
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a tabela {ano}/{modalidade}, você deseja continuar?'):
             resultado = remover_tabela(ano, modalidade) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade)
+            modificar_texto_erro(resultado, ano, modalidade, acao)
     
     elif ano and not modalidade and not estatistica:
-        texto_erro_acoes.config(foreground='red', text='')
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a olipíada do ano {ano}, você deseja continuar?'):
             resultado = remover_ano(ano) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade)
+            modificar_texto_erro(resultado, ano, modalidade, acao)
             dados = criar_tela_de_filtragem() # type: ignore
             lista_modalidade.config(values=dados[1])
             lista_ano.config(values=dados[2])

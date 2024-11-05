@@ -219,3 +219,53 @@ def pesquisa_dados(resultado):
             valor += 1
         
     return lista
+
+def inserir_estatistica(ano, modalidade, estatistica):
+    estatistica = estatistica.replace(' ', '_')
+    dados = [0, 1]
+    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
+    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
+    
+    try:
+        int(ano)
+    except ValueError:
+        return 0
+
+    for i in range(0, len(dados[0])):
+        if int(ano) == dados[0][i][0]:
+            for j in range(0, len(dados[1])):
+                if dados[1][j] == modalidade and dados[0][i][j + 1] == 1:
+                    resultado = ano + '_' + modalidade
+                    resultado = pesquisar_dados(resultado)
+                    for k in resultado[0]:
+                        if estatistica == k:
+                            return 3
+                    inserir_estatistica_dados('olimpiadas', f'{ano}_{modalidade}', estatistica, k)
+                    return 9
+            return 2
+    return 1  
+
+def inserir_modalidade(ano, modalidade):
+    dados = [0, 1]
+    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
+    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
+
+    try:
+        int(ano)
+    
+    except ValueError:
+        return 0
+
+    for i in range(0, len(dados[0])):
+        if int(ano) == dados[0][i][0]:
+            for j in range(0, len(dados[1])):
+                if modalidade == dados[1][j] and dados[0][i][j + 1] == 0:
+                    inserir_modalidade_em_ano_dados('olimpiadas', 'anos', modalidade, ano)
+                    return 4
+                elif modalidade == dados[1][j] and dados[0][i][j + 1] == 1:
+                    return 2
+            inserir_modalidade_nova_dados('olimpiadas', 'anos', modalidade, dados[1][j])
+            return 4
+    return 1
+
+print(inserir_modalidade('2024', 'flip'))

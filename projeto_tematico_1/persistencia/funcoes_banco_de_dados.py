@@ -89,3 +89,33 @@ def inserir_favorito_banco_de_dados(database, tabela, ano, modalidade):
     cursor = banco_de_dados.cursor() 
     cursor.execute(comando)
     banco_de_dados.commit()
+
+def inserir_estatistica_dados(database, tabela, o_que_inserir, onde_inserir):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} ADD COLUMN {o_que_inserir} VARCHAR(45) NULL AFTER {onde_inserir}'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def inserir_modalidade_nova_dados(database, tabela, o_que_inserir, onde_inserir):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} ADD COLUMN {o_que_inserir} TINYINT NULL DEFAULT 0 AFTER {onde_inserir}'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def inserir_modalidade_em_ano_dados(database, tabela, o_que_inserir, ano):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'UPDATE {database}.{tabela} SET {o_que_inserir} = 1 WHERE (ano = {ano})'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+    comando = f'CREATE TABLE {ano}_{o_que_inserir}(posição int primary key auto_increment, pais varchar(50))'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+    comando = f'INSERT INTO {database}.{ano}_{o_que_inserir} (pais) VALUES ("-")'
+    cursor = banco_de_dados.cursor() 
+    for i in range(0, 3):
+        cursor.execute(comando)
+    banco_de_dados.commit()
