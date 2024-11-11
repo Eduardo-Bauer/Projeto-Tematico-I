@@ -31,6 +31,11 @@ quadro_de_erro_acoes.grid(row=1, column=0, ipadx=10, ipady=5, pady=(0, 20))
 from styles import * # type: ignore
 
 ######### FUNCOES #########
+def atualizar_anos_modalidades():
+    dados = criar_tela_de_filtragem() # type: ignore
+    lista_modalidade.config(values=dados[1])
+    lista_ano.config(values=dados[2])
+
 def demostracao_dos_dados():
     try:
         resultado = lista_ano.get() + '_' + lista_modalidade.get()
@@ -47,39 +52,16 @@ def demostracao_dos_dados():
     except mysql.connector.errors.ProgrammingError: # type: ignore
         texto_erro_filtragem.config(text='pesquisa não encontrada')
 
-def modificar_texto_erro(resultado, ano, modalidade, acao):
-    if acao == 'excluir':
-        if resultado == 0:
-            texto_erro_acoes.config(text='Ano Deve Ter Apenas Numeros')
-        elif resultado == 1:
-            texto_erro_acoes.config(text='Ano Não Encontrado')
-            
-        elif resultado == 2:
-            texto_erro_acoes.config(text=f'Modalidade Não Encontrada no Ano: {ano}')
-            
-        elif resultado == 3:
-            texto_erro_acoes.config(text=f'Estatistica Não Encontrada no Ano/modalidade: {ano}/{modalidade}')
-        else:
-            texto_erro_acoes.config(foreground='green', text='Excluido com Sucesso!')
-            demostracao_dos_dados()
+def modificar_texto_erro(resultado):
+    biblioteca_de_casos = {0:'Ano Deve Ter Apenas Numeros', 1:'Ano Não Encontrado', 2:'Ano Encontrado', 3:'Modalidade Não Encontrada', 
+    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Acão Ocorreu Com Sucesso'}
 
-    elif acao == 'inserir':
-        if resultado == 0:
-            texto_erro_acoes.config(text='Ano Deve Ter Apenas Numeros')
-        elif resultado == 1:
-            texto_erro_acoes.config(text='Ano Não Encontrado')
-            
-        elif resultado == 2:
-            texto_erro_acoes.config(text=f'Modalidade Não Encontrada no Ano: {ano}')
-            
-        elif resultado == 3:
-            texto_erro_acoes.config(text=f'Estatistica Encontrada no Ano/modalidade: {ano}/{modalidade}')
-        else:
-            texto_erro_acoes.config(foreground='green', text='Inserido com Sucesso!')
-            demostracao_dos_dados()
+    if resultado == 7:
+        texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='green')
+        atualizar_anos_modalidades()
 
     else:
-        pass
+        texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='red')
 
 def puxar_dados():
     dados = pesquisa_dados(tv_dados.focus()) # type: ignore
@@ -102,53 +84,89 @@ def inserir():
     ano = entrada_ano.get()
     modalidade = entrada_modalidade.get()
     estatistica = entrada_estatistica.get()
-    acao = 'inserir'
 
     texto_erro_acoes.config(foreground='red', text='')
 
     if ano and modalidade and estatistica:
         resultado = inserir_estatistica(ano, modalidade, estatistica) # type: ignore
-        modificar_texto_erro(resultado, ano, modalidade, acao)
+        modificar_texto_erro(resultado)
 
     elif ano and modalidade and not estatistica:
         resultado = inserir_modalidade(ano, modalidade) # type: ignore
-        modificar_texto_erro(resultado, ano, modalidade, acao)
+        modificar_texto_erro(resultado)
+        atualizar_anos_modalidades()
 
     elif ano and not modalidade and not estatistica:
         resultado = inserir_ano(ano) # type: ignore
-        modificar_texto_erro(resultado, ano, modalidade, acao)
+        modificar_texto_erro(resultado)
+        atualizar_anos_modalidades()
+
     else:
-        texto_erro_acoes.config(text='Não Entendi o Que Você Está Excluindo')
+        texto_erro_acoes.config(text='Não Entendi o Que Você Está Inserindo')
 
 def editar():
-    pass
+    ano = entrada_ano.get()
+    modalidade = entrada_modalidade.get()
+    estatistica = entrada_estatistica.get()
+    primeiro = entrada_primeiro.get()
+    segundo = entrada_segundo.get()
+    terceiro = entrada_terceiro.get()
+    ano_selecionado = lista_ano.get()
+    modalidade_selecionada = lista_modalidade.get()
+    estatistica_selecionada = pesquisa_dados(tv_dados.focus()) # type: ignore
+
+    texto_erro_acoes.config(foreground='red', text='')
+
+    if ano != ano_selecionado and ano != '':
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando o ano {ano_selecionado} para {ano}, você deseja continuar?'):
+            #edita_ano(ano, ano_selecionado) #type: ignore
+            pass
+
+    elif modalidade != modalidade_selecionada and modalidade != '':
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando a modalidade {modalidade_selecionada} para {modalidade}, você deseja continuar?'):
+            # editar_modalidade(modalidade, modalidade_selecionada)
+            pass
+
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica == estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != ''):
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando aos dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
+            # editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro)
+            pass
+
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica != estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != ''):
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando aos dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
+            # editar_texto_estatistica(ano, modalidade, estatistica, estatistica_selecionada[0])
+            pass
+    else:
+        texto_erro_acoes.config(text='Não Entendi o Que Você Está Editando')
 
 def excluir():
     ano = entrada_ano.get()
     modalidade = entrada_modalidade.get()
     estatistica = entrada_estatistica.get()
-    acao = 'excluir'
     
     texto_erro_acoes.config(foreground='red', text='')
 
     if ano and modalidade and estatistica:
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a estatistica {estatistica} do {ano}/{modalidade}, você deseja continuar?'):
             resultado = remover_estatistica(ano, modalidade, estatistica) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade, acao)
+            modificar_texto_erro(resultado)
 
     elif ano and modalidade and not estatistica:
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a tabela {ano}/{modalidade}, você deseja continuar?'):
             resultado = remover_tabela(ano, modalidade) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade, acao)
+            modificar_texto_erro(resultado)
     
     elif ano and not modalidade and not estatistica:
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a olipíada do ano {ano}, você deseja continuar?'):
             resultado = remover_ano(ano) # type: ignore
-            modificar_texto_erro(resultado, ano, modalidade, acao)
-            dados = criar_tela_de_filtragem() # type: ignore
-            lista_modalidade.config(values=dados[1])
-            lista_ano.config(values=dados[2])
-            lista_ano.delete(0, 'end')
+            modificar_texto_erro(resultado)
+            atualizar_anos_modalidades()
+
+    elif not ano and modalidade and not estatistica:
+        if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a modalidade {modalidade} de todas as olimpiadas, você deseja continuar?'):
+            resultado = remover_modalidade(modalidade) # type: ignore
+            modificar_texto_erro(resultado)
+            atualizar_anos_modalidades()
 
     else:
         texto_erro_acoes.config(text='Não Entendi o Que Você Está Excluindo')

@@ -75,6 +75,12 @@ def remover_ano_dados(database, ano):
     cursor.execute(comando)
     banco_de_dados.commit()
 
+def remover_modalidade_dados(database, tabela, modalidade):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} DROP COLUMN {modalidade}'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
 
 def remover_favorito_banco_de_dados(database, tabela, ano, modalidade):
     banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
