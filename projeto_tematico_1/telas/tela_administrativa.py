@@ -54,11 +54,10 @@ def demostracao_dos_dados():
 
 def modificar_texto_erro(resultado):
     biblioteca_de_casos = {0:'Ano Deve Ter Apenas Numeros', 1:'Ano Não Encontrado', 2:'Ano Encontrado', 3:'Modalidade Não Encontrada', 
-    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Acão Ocorreu Com Sucesso'}
+    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Ação Ocorreu Com Sucesso'}
 
     if resultado == 7:
         texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='green')
-        atualizar_anos_modalidades()
 
     else:
         texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='red')
@@ -114,28 +113,32 @@ def editar():
     ano_selecionado = lista_ano.get()
     modalidade_selecionada = lista_modalidade.get()
     estatistica_selecionada = pesquisa_dados(tv_dados.focus()) # type: ignore
-
     texto_erro_acoes.config(foreground='red', text='')
 
-    if ano != ano_selecionado and ano != '':
+    if ano != ano_selecionado and (ano != '' and ano_selecionado != ''):
         if messagebox.askokcancel(title='Editar', message=f'Você está editando o ano {ano_selecionado} para {ano}, você deseja continuar?'):
-            #edita_ano(ano, ano_selecionado) #type: ignore
-            pass
+            resultado = edita_ano(ano, ano_selecionado) # type: ignore
+            modificar_texto_erro(resultado)
+            atualizar_anos_modalidades()
 
-    elif modalidade != modalidade_selecionada and modalidade != '':
+    elif modalidade != modalidade_selecionada and (modalidade != '' and modalidade_selecionada != ''):
         if messagebox.askokcancel(title='Editar', message=f'Você está editando a modalidade {modalidade_selecionada} para {modalidade}, você deseja continuar?'):
-            # editar_modalidade(modalidade, modalidade_selecionada)
-            pass
+            resultado = editar_modalidade(modalidade, modalidade_selecionada) # type: ignore
+            modificar_texto_erro(resultado)
+            atualizar_anos_modalidades()
 
-    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica == estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != ''):
-        if messagebox.askokcancel(title='Editar', message=f'Você está editando aos dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
-            # editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro)
-            pass
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica == estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] == ''):
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando os dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
+            resultado = editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro) # type: ignore
+            modificar_texto_erro(resultado)
+            demostracao_dos_dados()
 
-    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica != estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != ''):
-        if messagebox.askokcancel(title='Editar', message=f'Você está editando aos dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
-            # editar_texto_estatistica(ano, modalidade, estatistica, estatistica_selecionada[0])
-            pass
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica != estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] == ''):
+        if messagebox.askokcancel(title='Editar', message=f'Você está editando o nome da estatistica {estatistica_selecionada[0]} para {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
+            resultado = editar_texto_estatistica(ano, modalidade, estatistica, estatistica_selecionada[0]) # type: ignore
+            modificar_texto_erro(resultado)
+            demostracao_dos_dados()
+
     else:
         texto_erro_acoes.config(text='Não Entendi o Que Você Está Editando')
 

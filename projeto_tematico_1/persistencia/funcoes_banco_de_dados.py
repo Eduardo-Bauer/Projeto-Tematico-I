@@ -21,8 +21,8 @@ def filtrar_modalidades(database, tabela):
     esportes_do_banco_de_dados.pop(0)
     return esportes_do_banco_de_dados
 
-def criar_nova_tabela(databese, nome_da_tabela):
-    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{databese}')
+def criar_nova_tabela(database, nome_da_tabela):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
     cursor = banco_de_dados.cursor() 
     comando = f'CREATE TABLE favoritos_{nome_da_tabela}(id int primary key auto_increment, ano varchar(50), modalidade varchar(50))'
     cursor.execute(comando)
@@ -42,10 +42,37 @@ def inserir_na_tabela_anos(database, tabela, ano):
     cursor.execute(comando)
     banco_de_dados.commit()
 
-
-def editar_banco_de_dados(database, tabela, onde_mudar, oque_mudar, nome, senha):
+def editar_banco_de_dados(database, tabela, onde_mudar, o_que_mudar, valor_de_referencia, dado_novo):
     banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
-    comando = f'UPDATE {tabela} SET {oque_mudar} = "{senha}" WHERE {onde_mudar} = "{nome}"'
+    comando = f'UPDATE {tabela} SET {o_que_mudar} = "{dado_novo}" WHERE {onde_mudar} = "{valor_de_referencia}"'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def editar_texto_estatistica_dados(database, tabela, estatistica_anterior, estatistica_nova):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} CHANGE COLUMN {estatistica_anterior} {estatistica_nova} VARCHAR(50) NULL DEFAULT NULL'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def editar_modalidade_dados(database, tabela, modalidade_selecionada, modalidade):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} CHANGE COLUMN {modalidade_selecionada} {modalidade} TINYINT(1) NULL DEFAULT NULL'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def editar_tabelas_dados(database, tabela, tabela_nova):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'ALTER TABLE {database}.{tabela} RENAME TO {database}.{tabela_nova}'
+    cursor = banco_de_dados.cursor() 
+    cursor.execute(comando)
+    banco_de_dados.commit()
+
+def editar_ano_dados(database, tabela, ano, ano_selecionado):
+    banco_de_dados = mysql.connector.connect(host= 'localhost', user= 'root', password= '', database= f'{database}')
+    comando = f'UPDATE {database}.{tabela} SET ano = {ano} WHERE (ano = {ano_selecionado})'
     cursor = banco_de_dados.cursor() 
     cursor.execute(comando)
     banco_de_dados.commit()

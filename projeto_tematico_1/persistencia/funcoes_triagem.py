@@ -48,6 +48,19 @@ def criar_cadastro(nome, senha):
     criar_nova_tabela('cadastro', nome)
     return 0
 
+def criar_tela_de_filtragem():
+    dados = [0, 1, 2]
+    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
+    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
+    
+    anos_olimpiada = []
+    for i in dados[0]:
+        anos_olimpiada.append(i[0])
+
+    dados[2] = anos_olimpiada
+
+    return dados
+
 def mudar_senha(nome, senha):
     resultado = pesquisa_banco_de_dados('cadastro', 'usuarios')
     for i in resultado:
@@ -104,27 +117,8 @@ def add_favorito(pesquisa):
     inserir_favorito_banco_de_dados('cadastro', f'favoritos_{usuario_ativo()}', ano, modalidade)
     return 1
 
-def remover_favorito(pesquisa):
-    ano = pesquisa[:4]
-    modalidade = pesquisa[5:]
-    remover_favorito_banco_de_dados('cadastro', f'favoritos_{usuario_ativo()}', ano, modalidade)
-    return 1
-
 def recarregar(usuario):
     return pesquisa_banco_de_dados('cadastro', f'favoritos_{usuario}')
-
-def criar_tela_de_filtragem():
-    dados = [0, 1, 2]
-    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
-    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
-    
-    anos_olimpiada = []
-    for i in dados[0]:
-        anos_olimpiada.append(i[0])
-
-    dados[2] = anos_olimpiada
-
-    return dados
 
 def add_novo_ano(ano):
     resultado = pesquisa_banco_de_dados('olimpiadas', 'anos')
@@ -155,6 +149,12 @@ def pesquisa_dados(resultado):
             valor += 1
         
     return lista
+
+def remover_favorito(pesquisa):
+    ano = pesquisa[:4]
+    modalidade = pesquisa[5:]
+    remover_favorito_banco_de_dados('cadastro', f'favoritos_{usuario_ativo()}', ano, modalidade)
+    return 1
 
 def remover_estatistica(ano, modalidade, estatistica):
     estatistica = estatistica.replace(' ', '_')
@@ -297,4 +297,38 @@ def inserir_ano(ano):
         if int(ano) == i[0]:
             return 2
     inserir_na_tabela_anos('olimpiadas', 'anos', ano)
+    return 7
+
+def editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro):
+    valores = (0, primeiro, segundo, terceiro)
+    for i in range(1, 4):
+        editar_banco_de_dados('olimpiadas', f'{ano}_{modalidade}', 'posição', estatistica.replace(' ', '_'), i, valores[i])
+    return 7 
+
+def editar_texto_estatistica(ano, modalidade, estatistica, estatistica_selecionada):
+    editar_texto_estatistica_dados('olimpiadas', f'{ano}_{modalidade}', estatistica_selecionada.replace(' ', '_'), estatistica.replace(' ', '_'))
+    return 7
+
+def editar_modalidade(modalidade, modalidade_selecionada):
+    dados =  [0, 1]
+    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
+    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
+    for i in range(0, len(dados[1])):
+        if modalidade_selecionada == dados[1][i]:
+            for j in range(0, len(dados[0])):
+                if dados[0][j][i + 1] == 1:
+                    editar_tabelas_dados('olimpiadas', f'{dados[0][j][0]}_{modalidade_selecionada}', f'{dados[0][j][0]}_{modalidade}')
+    editar_modalidade_dados('olimpiadas', 'anos', modalidade_selecionada, modalidade)
+    return 7
+
+def edita_ano(ano, ano_selecionado):
+    dados =  [0, 1]
+    dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
+    dados[1] = filtrar_modalidades('olimpiadas', 'anos')
+    for i in range(0, len(dados[0])):
+        if dados[0][i][0] == int(ano_selecionado):
+            for j in range(1, len(dados[0][i])):
+                if dados[0][i][j] == 1:
+                    editar_tabelas_dados('olimpiadas', f'{ano_selecionado}_{dados[1][j - 1]}', f'{ano}_{dados[1][j - 1]}')
+    editar_ano_dados('olimpiadas', 'anos', ano, ano_selecionado)
     return 7
