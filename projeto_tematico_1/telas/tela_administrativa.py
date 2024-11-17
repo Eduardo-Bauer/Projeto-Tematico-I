@@ -54,7 +54,7 @@ def demostracao_dos_dados():
 
 def modificar_texto_erro(resultado):
     biblioteca_de_casos = {0:'Ano Deve Ter Apenas Numeros', 1:'Ano Não Encontrado', 2:'Ano Encontrado', 3:'Modalidade Não Encontrada', 
-    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Ação Ocorreu Com Sucesso'}
+    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Sua Ação Ocorreu Com Sucesso!'}
 
     if resultado == 7:
         texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='green')
@@ -127,13 +127,13 @@ def editar():
             modificar_texto_erro(resultado)
             atualizar_anos_modalidades()
 
-    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica == estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] == ''):
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica == estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] != ''):
         if messagebox.askokcancel(title='Editar', message=f'Você está editando os dados da estatistica {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
             resultado = editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro) # type: ignore
             modificar_texto_erro(resultado)
             demostracao_dos_dados()
 
-    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica != estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] == ''):
+    elif (ano == ano_selecionado and modalidade == modalidade_selecionada and estatistica != estatistica_selecionada[0]) and (ano != '' and modalidade != '' and estatistica != '' and estatistica_selecionada[0] != ''):
         if messagebox.askokcancel(title='Editar', message=f'Você está editando o nome da estatistica {estatistica_selecionada[0]} para {estatistica} da tabela {ano_selecionado}/{modalidade_selecionada}, você deseja continuar?'):
             resultado = editar_texto_estatistica(ano, modalidade, estatistica, estatistica_selecionada[0]) # type: ignore
             modificar_texto_erro(resultado)
