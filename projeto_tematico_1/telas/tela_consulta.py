@@ -10,7 +10,7 @@ from funcoes_triagem import * # type: ignore
 ######### INTERFACE #########
 janela_de_consulta = Tk()
 janela_de_consulta.title('ScoreGame')
-janela_de_consulta.geometry('1200x840')
+janela_de_consulta.geometry('1200x829')
 janela_de_consulta.config(background='white')
 
 ######### LABELS #########
@@ -118,10 +118,10 @@ texto_de_favoritos = ttk.Label(quadro_de_pesquisa, text = 'Favoritos', style = '
 titulo = ttk.Label(quadro_de_dados, text='SCOREGAME', style='titulo.TLabel', anchor='center')
 
 #botoes#
-botao_de_pesquisa = ttk.Button(quadro_de_pesquisa, text = 'Pesquisar', style = 'principal.TButton', command = demostracao_dos_dados)
-botao_favoritar = ttk.Button(quadro_de_pesquisa, text = 'Favoritar', style = 'TButton', command = favoritar)
-botao_de_pesquisa_favorito = ttk.Button(quadro_de_pesquisa, text='Pesquisar', style='principal.TButton', command = demostracao_dos_dados_favoritos)
-botao_desfavoritar = ttk.Button(quadro_de_pesquisa, text='Desfavoritar', style='TButton', command = desfavoritar)
+botao_de_pesquisa = ttk.Button(quadro_de_pesquisa, text = 'Pesquisar', style = 'verde.TButton', command = demostracao_dos_dados)
+botao_favoritar = ttk.Button(quadro_de_pesquisa, text = 'Favoritar', style = 'azul.TButton', command = favoritar)
+botao_de_pesquisa_favorito = ttk.Button(quadro_de_pesquisa, text='Pesquisar', style='verde.TButton', command = demostracao_dos_dados_favoritos)
+botao_desfavoritar = ttk.Button(quadro_de_pesquisa, text='Desfavoritar', style='vermelho.TButton', command = desfavoritar)
 
 #### QUADRO DE PESQUISA ####
 y_filtragem_scrollbar = tk.Scrollbar(quadro_de_pesquisa, orient = tk.VERTICAL)
@@ -182,7 +182,7 @@ botao_de_pesquisa_favorito.grid(row=5, column=0, pady=(15, 15), sticky=tk.W, ipa
 botao_desfavoritar.grid(row=5, column=0, pady=(15, 15), sticky=tk.E)
 
 #### QUADRO DE DADOS ####
-titulo.grid(row=0, column=0, ipady=35)
+titulo.grid(row=0, column=0, ipady=30)
 tv_dados.grid(row=1, column=0, ipady=245, sticky=tk.N+tk.S+tk.E+tk.W)
 y_dados_scrollbar.grid(row=1, column=1, sticky=tk.N+tk.S)
 

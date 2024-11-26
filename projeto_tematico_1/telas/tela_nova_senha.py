@@ -45,7 +45,7 @@ entrada_senha = ttk.Entry(janela_nova_senha, style='TEntry', font=('Calibri', 12
 
 #textos#
 texto_titulo = ttk.Label(janela_nova_senha, text='NOVA SENHA', style='titulo_geral.TLabel')
-texto_usuario = ttk.Label(janela_nova_senha, text='Digite o Usuario', style='TLabel')
+texto_usuario = ttk.Label(janela_nova_senha, text='Digite o Usuário', style='TLabel')
 texto_senha = ttk.Label(janela_nova_senha, text='Digite sua Nova Senha', style='TLabel')
 texto_de_erro = ttk.Label(janela_nova_senha, text='', style='erro.TLabel')
 

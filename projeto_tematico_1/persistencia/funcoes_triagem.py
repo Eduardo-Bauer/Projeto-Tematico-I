@@ -266,7 +266,7 @@ def inserir_modalidade(ano, modalidade):
     dados = [0, 1]
     dados[0] = pesquisa_banco_de_dados('olimpiadas', 'anos')
     dados[1] = filtrar_modalidades('olimpiadas', 'anos')
-
+    modalidade = modalidade.replace(' ', '_')
     try:
         int(ano)
     

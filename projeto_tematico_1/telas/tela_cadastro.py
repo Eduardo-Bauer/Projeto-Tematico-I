@@ -47,7 +47,7 @@ entrada_senha = ttk.Entry(janela_cadastro, style='TEntry', font=('Calibri', 12, 
 
 #textos#
 texto_titulo = ttk.Label(janela_cadastro, text='CADASTRE-SE', style='titulo_geral.TLabel')
-texto_usuario = ttk.Label(janela_cadastro, text='Digite o Usuario', style='TLabel')
+texto_usuario = ttk.Label(janela_cadastro, text='Digite o Usuário', style='TLabel')
 texto_senha = ttk.Label(janela_cadastro, text='Digite sua Senha', style='TLabel')
 texto_de_erro = ttk.Label(janela_cadastro, text='', style='erro.TLabel')
 
