@@ -66,7 +66,8 @@ def mudar_senha(nome, senha):
     for i in resultado:
         if i[1] == nome:
             editar_banco_de_dados('cadastro', 'usuarios', 'nome', 'senha', nome, senha)
-    return 1
+            return 1
+    return 0
 
 def pesquisar_dados(pesquisa):
     resultado = pesquisa_banco_de_dados('olimpiadas', f'{pesquisa}')
@@ -107,9 +108,10 @@ def pesquisar_dados_favoritos(pesquisa):
 def add_favorito(pesquisa):
     ano = pesquisa[:4]
     modalidade = pesquisa[5:]
-
-    resultado = pesquisa_banco_de_dados('cadastro', f'favoritos_{usuario_ativo()}')
+    if modalidade == '':
+        return 0
     
+    resultado = pesquisa_banco_de_dados('cadastro', f'favoritos_{usuario_ativo()}')
     for i in resultado:
         if ano in i and modalidade in i:
             return 0

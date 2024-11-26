@@ -42,7 +42,9 @@ def demostracao_dos_dados():
             tv_dados.insert('', 'end', values=(valores[0][i].replace('_', ' '), valores[1][i], valores[2][i], valores[3][i]))
 
     else:
-        titulo['text'] = 'SCOREGAME'
+        titulo['text'] = 'Erro ao Pesquisar'
+        for item in tv_dados.get_children():
+            tv_dados.delete(item)
 
 def demostracao_dos_dados_favoritos():
     try:
@@ -57,7 +59,9 @@ def demostracao_dos_dados_favoritos():
         for i in range(0, len(valores[0])):
             tv_dados.insert('', 'end', values=(valores[0][i].replace('_', ' '), valores[1][i], valores[2][i], valores[3][i]))
     except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'SCOREGAME'
+        titulo['text'] = 'Erro ao Pesquisar'
+        for item in tv_dados.get_children():
+            tv_dados.delete(item)
 
 def favoritar():
     try:
@@ -65,20 +69,36 @@ def favoritar():
 
         if add_favorito(pesquisa): # type: ignore
             recarregar_favoritos()
+            demostracao_dos_dados()
+            titulo['text'] = f'{pesquisa.replace('_', ' ')}'
+
         else:
-            titulo['text'] = 'SCOREGAME'
+            titulo['text'] = 'Erro ao Favoritar'
+            for item in tv_dados.get_children():
+                tv_dados.delete(item)
 
     except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'SCOREGAME'
+        titulo['text'] = 'Erro ao Favoritar'
+        for item in tv_dados.get_children():
+            tv_dados.delete(item)
 
 def desfavoritar():
-    try:
-        pesquisa = tv_favoritos.focus()
-        remover_favorito(pesquisa) # type: ignore
-        recarregar_favoritos()
+    pesquisa = tv_favoritos.focus()
+    if pesquisa == '':
+        titulo['text'] = 'Erro ao desfavoritar'
 
-    except mysql.connector.errors.ProgrammingError: # type: ignore
-        titulo['text'] = 'SCOREGAME'
+    else:
+        try:
+            remover_favorito(pesquisa) # type: ignore
+            recarregar_favoritos()
+
+            titulo['text'] = 'SCOREGAME'
+
+        except mysql.connector.errors.ProgrammingError: # type: ignore
+            titulo['text'] = 'Erro ao desfavoritar'
+
+    for item in tv_dados.get_children():
+        tv_dados.delete(item)
 
 def recarregar_favoritos():
     usuario = usuario_ativo() # type: ignore

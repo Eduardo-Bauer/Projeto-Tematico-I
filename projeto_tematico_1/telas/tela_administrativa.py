@@ -54,7 +54,7 @@ def demostracao_dos_dados():
 
 def modificar_texto_erro(resultado):
     biblioteca_de_casos = {0:'Ano Deve Ter Apenas Numeros', 1:'Ano Não Encontrado', 2:'Ano Encontrado', 3:'Modalidade Não Encontrada', 
-    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Encontrada', 7: 'Sua Ação Ocorreu Com Sucesso!'}
+    4:'Modalidade Encontrada', 5:'Estatistica Não Encontrada', 6:'Estatistica Já Encontrada', 7: 'Sua Ação Ocorreu Com Sucesso!'}
 
     if resultado == 7:
         texto_erro_acoes.config(text=biblioteca_de_casos[resultado], foreground='green')
@@ -83,12 +83,18 @@ def inserir():
     ano = entrada_ano.get()
     modalidade = entrada_modalidade.get()
     estatistica = entrada_estatistica.get()
+    primeiro = entrada_primeiro.get()
+    segundo = entrada_segundo.get()
+    terceiro = entrada_terceiro.get()
 
     texto_erro_acoes.config(foreground='red', text='')
 
     if ano and modalidade and estatistica:
         resultado = inserir_estatistica(ano, modalidade, estatistica) # type: ignore
         modificar_texto_erro(resultado)
+        if (primeiro != '' or segundo != '' or terceiro != ''):
+            editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro) # type: ignore
+        demostracao_dos_dados()
 
     elif ano and modalidade and not estatistica:
         resultado = inserir_modalidade(ano, modalidade) # type: ignore
@@ -153,6 +159,7 @@ def excluir():
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a estatistica {estatistica} do {ano}/{modalidade}, você deseja continuar?'):
             resultado = remover_estatistica(ano, modalidade, estatistica) # type: ignore
             modificar_texto_erro(resultado)
+            demostracao_dos_dados()
 
     elif ano and modalidade and not estatistica:
         if messagebox.askyesno(title='Excluir', message=f'Você está excluindo a tabela {ano}/{modalidade}, você deseja continuar?'):
