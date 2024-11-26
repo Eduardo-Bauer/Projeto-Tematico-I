@@ -55,7 +55,7 @@ def demostracao_dos_dados_favoritos():
         valores = pesquisar_dados_favoritos(pesquisa) # type: ignore
 
         for i in range(0, len(valores[0])):
-            tv_dados.insert('', 'end', values=(valores[0][i], valores[1][i], valores[2][i], valores[3][i]))
+            tv_dados.insert('', 'end', values=(valores[0][i].replace('_', ' '), valores[1][i], valores[2][i], valores[3][i]))
     except mysql.connector.errors.ProgrammingError: # type: ignore
         titulo['text'] = 'SCOREGAME'
 
@@ -89,7 +89,7 @@ def recarregar_favoritos():
     resultado = recarregar(usuario) # type: ignore
 
     for i in resultado:
-        tv_favoritos.insert('', 'end', f'{i[1]}_{i[2]}', values=(i[1], i[2]))
+        tv_favoritos.insert('', 'end', f'{i[1]}_{i[2]}', values=(i[1], i[2].replace('_', ' ')))
 
 ######### COMPONENTES #########
 #textos#
