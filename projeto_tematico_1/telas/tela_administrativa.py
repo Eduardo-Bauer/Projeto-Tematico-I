@@ -92,7 +92,7 @@ def inserir():
     if ano and modalidade and estatistica:
         resultado = inserir_estatistica(ano, modalidade, estatistica) # type: ignore
         modificar_texto_erro(resultado)
-        if (primeiro != '' or segundo != '' or terceiro != ''):
+        if ((primeiro != '' or segundo != '' or terceiro != '') and resultado == 7):
             editar_estatistica(ano, modalidade, estatistica, primeiro, segundo, terceiro) # type: ignore
         demostracao_dos_dados()
 
